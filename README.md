@@ -108,4 +108,17 @@ around when they don't have to be. You can easily lose track of what they are th
 a performance price to pay; here the charge is now calculated twice. But it is easy to optimize that in the rental class, and you can optimize much more
 effectively when the code is properly factored.
 
+
+
+Refactoring 6: Extracting Frequent Renter Points
+------------------------------------------------
+The next step is to do a similar thing for the frequent renter points. The rules vary with the tape, although there is less variation than with charging.
+It seems reasonable to put the responsibility on the rental. First we need to use "Extract Method" on the frequent renter points part of the code.
+
+Again we look at the use of locally scoped variables. Again $rental is used and can be passed in as a parameter. The other temp used is $frequentRenterPoints.
+In this case $frequentRenterPoints does have a value beforehand. The body of the extracted method doesn't read the value, however, so we don't need to pass it in
+as a parameter as long as we use an appending assignment.
+
+With refactoring, small steps are the best; that way less tends to go wrong.
+
 *****
