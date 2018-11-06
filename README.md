@@ -121,4 +121,43 @@ as a parameter as long as we use an appending assignment.
 
 With refactoring, small steps are the best; that way less tends to go wrong.
 
+
+
+Refactoring 7: Removing Temps
+-----------------------------
+As I suggested before, temporary variables can be a problem. They are useful only within their own routine, and thus they encourage long, complex routines.
+In this case we have two temporary variables, both of which are being used to get a total from the rentals attached to the customer. Both the ASCII and HTML versions
+require these totals. I like to use "Replace Temp with Query" to replace $totalAmount and $frequentRentalPoints with query methods. Queries are accessible to any
+method in the class and thus encourage a cleaner design without long, complex methods.
+
+I began by replacing $totalAmount with a charge method on customer. This isn't the simplest case of "Replace Temp with Query" $totalAmount was assigned to within the loop,
+so I have to copy the loop into the query method.
+
+After that refactoring, I did the same for $frequentRenterPoints.
+
+It is worth stopping to think a bit about the last refactoring. Most refactorings reduce the amount of code, but this one increases it.
+
+The other concern with this refactoring lies in performance. The old code executed the "foreach" loop once, the new code executes it three times. A foreach loop that takes
+a long time might impair performance. Many programmers would not do this refactoring simply for this reason. But note the words 'if' and 'might'. Until I profile I cannot
+tell how much time is needed for the loop to calculate or whether the loop is called often enough for it to affect the overall performance of the system. Don't worry about
+this while refactoring. When you optimize you will have to worry about it, but you will then be in a much better position to do something about it, and you will have more
+options to optimize effectively.
+
+These queries are now available for any code written in the customer class. They can easily be added to the interface of the class should other parts of the system need
+this information. Without queries like these, other methods have to deal with knowing about the rentals and building the loops. In a complex system, that will lead to much
+more code to write and maintain.
+
+You can see the difference immediately with the "htmlStatement". I am now at the point where I take off my refactoring hat and put on my adding function hat. I can write "htmlStatement"
+function.
+
+By extracting the calculations I can create the "htmlStatement" method and reuse all of the calculation code that was in the original statement method. I didn't copy and paste,
+so if the calculation rules change I have only one place in the code to go to. Any other kind of statement will be really quick and easy to prepare. The refactoring did not
+take long. I spent most of the time figuring out what the code did, and I would have had to do that anyway.
+
+Some code is copied from the ASCII version, mainly due to setting up the loop. Further refactoring could clean that up. Extracting methods for header, footer, and detail
+line are one route I could take. You can see how to do this in the example for "Form Template Method". But now the users are clamoring again. They are getting ready to
+change the classification of the movies in the store. It's still not clear what changes they want to make, but it sounds like new classifications will be introduced, and
+the existing ones could well be changed. The charges and frequent renter point allocations for these classifications are to be decided. At the moment, making these kind of
+changes is awkward. I have to get into the charge and frequent renter point methods and alter the conditional code to make changes to film classifications. Back on with the refactoring hat.
+
 *****

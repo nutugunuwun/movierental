@@ -25,4 +25,8 @@ $rental = new Rental($movie, 3);
 $customer->addRental($rental);
 
 
-echo $customer->statement() . PHP_EOL;
+if (defined('STDIN')){
+    echo $customer->statement() . PHP_EOL;
+} else {
+    echo $customer->htmlStatement() . PHP_EOL;
+}
