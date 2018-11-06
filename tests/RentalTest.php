@@ -22,7 +22,7 @@ class RentalTest extends TestCase
         $movie = new Movie('Saya Suka Kamu Punya', 0);
         $rental = new Rental($movie, 5);
 
-        
+
         $expected = 'Saya Suka Kamu Punya';
         $result = $rental->getMovie()->getTitle();
 
@@ -31,6 +31,17 @@ class RentalTest extends TestCase
 
         $expected = 0;
         $result = $rental->getMovie()->getPriceCode();
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testMengambilRentalCharge()
+    {
+        $movie = new Movie('Saya Suka Kamu Punya', 0);
+        $rental = new Rental($movie, 5);
+
+        $expected = 6.5;
+        $result = $rental->getCharge();
 
         $this->assertEquals($expected, $result);
     }

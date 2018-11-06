@@ -71,4 +71,16 @@ highlight anything you miss. Remember: "Any fool can write code that a computer 
 Code that communicates its purpose is very important. I often refactor just when I'm reading some code. That way as I gain understanding about the program,
 I embed that understanding into the code for later so I don't forget what I learned.
 
+
+
+Refactoring 3: Moving the Amount Calculation
+--------------------------------------------
+As I look at "amountFor" method, I can see that it uses information from the rental, but does not use information from the customer.
+
+This immediately raises my suspicions that the method is on the wrong object. In most cases a method should be on the object whose data it uses,
+thus the method should be moved to the "rental" class. To do this I use "Move Method". With this you first copy the code over to rental, adjust it to fit in its new home.
+
+In this case fitting into its new home means removing the parameter. I also renamed the method as I did the move.
+
+I can now test to see whether this method works. To do this I replace the body of "Customer::amountFor" to delegate to the new method.
 *****
