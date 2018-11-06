@@ -160,4 +160,15 @@ change the classification of the movies in the store. It's still not clear what 
 the existing ones could well be changed. The charges and frequent renter point allocations for these classifications are to be decided. At the moment, making these kind of
 changes is awkward. I have to get into the charge and frequent renter point methods and alter the conditional code to make changes to film classifications. Back on with the refactoring hat.
 
+
+
+Refactoring 8: Replacing the Conditional Logic on Price Code with Polymorphism
+------------------------------------------------------------------------------
+The first part of this problem is that switch statement. It is a bad idea to do a switch based on an attribute of another object. If you must use a switch statement,
+it should be on your own data, not on someone else's. This implies that "getCharge" method should move onto "movie" class.
+
+For this to work I had to pass in the length of the rental, which of course is data from the rental. The method effectively uses two pieces of data, the length of the rental and the type of the movie. Why do I prefer to pass the length of rental to the movie rather than the movie type to the rental? It's because the proposed changes are all about adding new types. Type information generally tends to be more volatile. If I change the movie type, I want the least ripple effect, so I prefer to calculate the charge within the movie.
+
+Once I've moved the "getCharge" method, I'll do the same with the frequent renter point calculation. That keeps both things that vary with the type together on the class that has the type.
+
 *****

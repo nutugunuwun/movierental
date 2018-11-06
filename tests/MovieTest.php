@@ -24,4 +24,14 @@ class MovieTest extends TestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    public function testMengambilRentalCharge()
+    {
+        $movie = new Movie('Saya Suka Kamu Punya', 0);
+
+        $expected = 6.5;
+        $result = $movie->getCharge(5);
+
+        $this->assertEquals($expected, $result);
+    }
 }
