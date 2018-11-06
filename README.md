@@ -57,4 +57,18 @@ statement method with much less duplication of code.
 My first step is to find a logical clump of code and use "Extract Method". An obvious piece here is the switch statement. This looks like it would make
 a good chunk to extract into its own method.
 
+
+
+Refactoring 2: Renaming
+-----------------------
+Now that I've broken the original method down into chunks, I can work on them separately. I don't like some of the variable names in $amountFor,
+and this is a good place to change them.
+
+Is renaming worth the effort? Absolutely. Good code should communicate what it is doing clearly, and variable names are a key to clear code. Never be
+afraid to change the names of things to improve clarity. With good find and replace tools, it is usually not difficult. Strong typing and testing will
+highlight anything you miss. Remember: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
+
+Code that communicates its purpose is very important. I often refactor just when I'm reading some code. That way as I gain understanding about the program,
+I embed that understanding into the code for later so I don't forget what I learned.
+
 *****
