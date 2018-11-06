@@ -96,4 +96,16 @@ all the classes that might be using that method.
 The next thing is to remove the old method, "Customer::amountFor", but sometimes I leave the old method to delegate to the new method. This is
 useful if it is a public method and I don't want to change the interface of the other class.
 
+
+
+Refactoring 5: Replace Temp with Query
+--------------------------------------
+The next thing that strikes me is that $thisAmount variable is now redundant. It is set to the result of rental charge and not changed afterward.
+Thus I can eliminate $thisAmount by using "Replace Temp with Query".
+
+I like to get rid of temporary variables such as this as much as possible. Temps are often a problem in that they cause a lot of parameters to be passed
+around when they don't have to be. You can easily lose track of what they are there for. They are particularly insidious in long methods. Of course there is
+a performance price to pay; here the charge is now calculated twice. But it is easy to optimize that in the rental class, and you can optimize much more
+effectively when the code is properly factored.
+
 *****
