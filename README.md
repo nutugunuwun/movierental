@@ -83,4 +83,17 @@ thus the method should be moved to the "rental" class. To do this I use "Move Me
 In this case fitting into its new home means removing the parameter. I also renamed the method as I did the move.
 
 I can now test to see whether this method works. To do this I replace the body of "Customer::amountFor" to delegate to the new method.
+
+
+
+Refactoring 4: Adjust the Reference
+-----------------------------------
+The next step is to find every reference to the old method and adjust the reference to use the new method.
+
+In this case this step is easy because we just created the method and it is in only one place. In general, however, you need to do a "find" across
+all the classes that might be using that method.
+
+The next thing is to remove the old method, "Customer::amountFor", but sometimes I leave the old method to delegate to the new method. This is
+useful if it is a public method and I don't want to change the interface of the other class.
+
 *****

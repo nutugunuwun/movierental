@@ -32,7 +32,7 @@ class Customer
 
         foreach($this->_rentals as $rental){
 
-            $thisAmount = $this->amountFor($rental);
+            $thisAmount = $rental->getCharge();
 
             // add frequent renter points
             $frequentRenterPoints++;
