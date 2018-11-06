@@ -171,4 +171,41 @@ For this to work I had to pass in the length of the rental, which of course is d
 
 Once I've moved the "getCharge" method, I'll do the same with the frequent renter point calculation. That keeps both things that vary with the type together on the class that has the type.
 
+
+
+Refactoring 9: Inheritance
+--------------------------
+We have several types of movie that have different ways of answering the same question. This sounds like a job for subclasses. We can have three subclasses of movie, each of which can have its own version of charge.
+
+This allows me to replace the switch statement by using polymorphism. Sadly it has one slight flaw—it doesn't work. A movie can change its classification during its lifetime. An object cannot change its class during its lifetime. There is a solution, however, the State pattern [Gang of Four].
+
+By adding the indirection we can do the subclassing from the price code object and change the price whenever we need to.
+
+If you are familiar with the Gang of Four patterns, you may wonder, "Is this a state, or is it a strategy?" Does the price class represent an algorithm for calculating the price (in which case I prefer to call it Pricer or PricingStrategy), or does it represent a state of the movie (Star Trek X is a new release). At this stage the choice of pattern (and name) reflects how you want to think about the structure. At the moment I'm thinking about this as a state of movie. If I later decide a strategy communicates my intention better, I will refactor to do this by changing the names.
+
+To introduce the state pattern I will use three refactorings. First I'll move the type code behavior into the state pattern with "Replace Type Code with State/Strategy". Then I can use "Move Method" to move the switch statement into the price class. Finally I'll use "Replace Conditional with Polymorphism" to eliminate the switch statement.
+
+I begin with "Replace Type Code with State/Strategy". This first step is to use "Self Encapsulate Field" on the type code to ensure that all uses of the type code go through getting
+and setting methods. Because most of the code came from other classes, most methods already use the getting method. However, the constructors do access the price code.
+
+I add the new classes. I provide the type code behavior in the price object. I do this with an abstract method on price and concrete methods in the subclasses. I need to change movie's accessors for the price code to use the new class. This means replacing the price code field with a price field, and changing the accessors.
+
+I apply "Move Method" to "getCharge" method. Once it is moved I can start using "Replace Conditional with Polymorphism". I do this by taking one leg of the case statement at a time and creating an overriding method. I start with "RegularPrice" class. This overrides the parent case statement, which I just leave as it is. I compile and test for this case then take the next leg, compile and test. (To make sure I'm executing the subclass code, I like to throw in a deliberate bug and run it to ensure the tests blow up. Not that I'm paranoid or anything.)
+
+When I've done that with all the legs, I declare the "Price::getCharge" method abstract.
+
+I can now do the same procedure with "getFrequentRenterPoints" method. First I move the method over to Price. In this case, however, I don't make the superclass method abstract. Instead I create an overriding method for new releases and leave a defined method (as the default) on the superclass.
+
+Putting in the state pattern was quite an effort. Was it worth it? The gain is that if I change any of price's behavior, add new prices, or add extra price-dependent behavior, the change will be much easier to make. The rest of the application does not know about the use of the state pattern. For the tiny amount of behavior I currently have, it is not a big deal. In a more complex system with a dozen or so price-dependent methods, this would make a big difference. All these changes were small steps. It seems slow to write it this way, but not once did I have to open the debugger, so the process actually flowed quite quickly. It took me much longer to write this section of the book than it did to change the code.
+
+I've now completed the second major refactoring. It is going to be much easier to change the classification structure of movies, and to alter the rules for charging and the frequent renter point system.
+
+
+
+Final Thoughts
+--------------
+This is a simple example, yet I hope it gives you the feeling of what refactoring is like. I've used several refactorings, including "Extract Method", "Move Method", and "Replace Conditional with Polymorphism". All these lead to better-distributed responsibilities and code that is easier to maintain. It does look rather different from procedural style code, and that takes some getting used to. But once you are used to it, it is hard to go back to procedural programs.
+
+The most important lesson from this example is the rhythm of refactoring: test, small change, test, small change, test, small change. It is that rhythm that allows refactoring to move quickly and safely.
+
 *****

@@ -9,22 +9,38 @@ class Movie
     public const CHILDREN = 2;
 
     private $_title;
-    private $_priceCode;
+    private $_price;
 
     public function __construct(string $title, int $priceCode)
     {
         $this->_title = $title;
-        $this->_priceCode = $priceCode;
+        $this->setPriceCode($priceCode);
     }
 
     public function getPriceCode(): int
     {
-        return $this->_priceCode;
+        return $this->_price->getPriceCode();
     }
 
     public function setPriceCode(int $arg): void
     {
-        $this->_priceCode = $arg;
+        switch ($arg) {
+            case self::REGULAR:
+                $this->_price = new RegularPrice();
+                break;
+
+            case self::NEW_RELEASE:
+                $this->_price = new NewReleasePrice();
+                break;
+
+            case self::CHILDREN:
+                $this->_price = new ChildrenPrice();
+                break;
+
+            default:
+                //throw new \Exception("Incorrect Price Code");
+
+        }
     }
 
     public function getTitle(): string
@@ -34,37 +50,11 @@ class Movie
 
     public function getCharge(int $daysRented): float
     {
-        $result = 0;
-
-        switch($this->getPriceCode()){
-            case self::REGULAR:
-                $result += 2;
-                if ($daysRented > 2){
-                    $result += ($daysRented - 2) * 1.5;
-                }
-                break;
-
-            case self::NEW_RELEASE:
-                $result += $daysRented * 3;
-                break;
-
-            case self::CHILDREN:
-                $result += 1.5;
-                if ($daysRented > 3){
-                    $result += ($daysRented - 3) * 1.5;
-                }
-                break;
-        }
-
-        return $result;
+        return $this->_price->getCharge($daysRented);
     }
 
     public function getFrequentRenterPoints(int $daysRented): int
     {
-        if ($this->getPriceCode() == self::NEW_RELEASE && $daysRented > 1){
-            return 2;
-        } else {
-            return 1;
-        }
+        return $this->_price->getFrequentRenterPoints($daysRented);
     }
 }
