@@ -31,28 +31,8 @@ class Customer
                   'Rental Record for ' . $this->getName() . "\n\n";
 
         foreach($this->_rentals as $rental){
-            $thisAmount = 0;
 
-            // determine amounts for each line
-            switch($rental->getMovie()->getPriceCode()){
-                case Movie::REGULAR:
-                    $thisAmount += 2;
-                    if ($rental->getDaysRented() > 2){
-                        $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
-                    }
-                    break;
-
-                case Movie::NEW_RELEASE:
-                    $thisAmount += $rental->getDaysRented() * 3;
-                    break;
-
-                case Movie::CHILDREN:
-                    $thisAmount += 1.5;
-                    if ($rental->getDaysRented() > 3){
-                        $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
-                    }
-                    break;
-            }
+            $thisAmount = $this->amountFor($rental);
 
             // add frequent renter points
             $frequentRenterPoints++;
@@ -74,5 +54,32 @@ class Customer
                    "\n------------------------------------------------\n";
 
         return $result;
+    }
+
+    private function amountFor(Rental $rental): float
+    {
+        $thisAmount = 0;
+
+        switch($rental->getMovie()->getPriceCode()){
+            case Movie::REGULAR:
+                $thisAmount += 2;
+                if ($rental->getDaysRented() > 2){
+                    $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
+                }
+                break;
+
+            case Movie::NEW_RELEASE:
+                $thisAmount += $rental->getDaysRented() * 3;
+                break;
+
+            case Movie::CHILDREN:
+                $thisAmount += 1.5;
+                if ($rental->getDaysRented() > 3){
+                    $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
+                }
+                break;
+        }
+
+        return $thisAmount;
     }
 }

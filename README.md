@@ -44,4 +44,17 @@ You may be tempted to make the fewest possible changes to the program; after all
 The program may not be broken, but it does hurt. It is making your life more difficult because you find it hard to make the changes your users want.
 This is where refactoring comes in.
 
+
+
+Refactoring 1: Decomposing and Redistributing the Statement Method
+------------------------------------------------------------------
+The obvious first target of my attention is the overly long "statement" method. When I look at a long method like that, I am looking to decompose the method
+into smaller pieces. Smaller pieces of code tend to make things more manageable. They are easier to work with and move around.
+
+The first phase of the refactoring show how I split up the long method and move the pieces to better classes. My aim is to make it easier to write an HTML
+statement method with much less duplication of code.
+
+My first step is to find a logical clump of code and use "Extract Method". An obvious piece here is the switch statement. This looks like it would make
+a good chunk to extract into its own method.
+
 *****
